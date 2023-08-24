@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Karzame</string>
+
+ 
+
+<string name="facebook_app_id">756219265862147</string>
+ <string name="fb_login_protocol_scheme">fb1234</string>
+<string name="facebook_client_token">4a6c86d1d4773a2def1ee914bd01446e</string>
+
+
+
+
+</resources>

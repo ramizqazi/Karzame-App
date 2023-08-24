@@ -1,0 +1,11 @@
+export default Colors = {
+  PRIMARY_WHITE: '#FFFFFF',
+  BLACK: '#000000',
+  BTN_TXT_WHITE: '#FFFFFF',
+  GREY: '#B5B5B5',
+  GREY1: '#333333',
+  GREEN: '#27AE60',
+  RED: '#EB5757',
+  YELLOW: '#FFCE31',
+  LIGHT_PINK: '#E8E8E8',
+};

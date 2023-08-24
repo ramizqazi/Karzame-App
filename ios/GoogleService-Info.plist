@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>551367851869-sue6phipemfovde06rqcd378l5534vuo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.551367851869-sue6phipemfovde06rqcd378l5534vuo</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>551367851869-sgiiv43q636590526e72vldkn95kivjj.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyARV-fsOmRJd1QORhfcDvXj8NMdchvgMhA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>551367851869</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.karzamee.app</string>
+	<key>PROJECT_ID</key>
+	<string>karzame-f00a9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>karzame-f00a9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:551367851869:ios:0be731e3f01992b13032b4</string>
+	<key>DATABASE_URL</key>
+	<string>https://karzame-f00a9-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
