@@ -1,55 +1,62 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Gyroscope } from 'react-native-sensors';
+import React, {useEffect, useState, useRef} from 'react';
 import {
-  View,
-  Image,
-  Text,
-  Animated,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+  gyroscope,
+  magnetometer,
+  setUpdateIntervalForType,
+  SensorTypes,
+} from 'react-native-sensors';
+import {View, Image, Text, Dimensions, StyleSheet} from 'react-native';
 import MapView, {
   Marker,
-  Polyline,
   Callout,
   PROVIDER_GOOGLE,
   AnimatedRegion,
 } from 'react-native-maps';
+import LPF from 'lpf';
+
 import MyPinn from '../assets/MapService/MyPinn.svg';
 import MyPin from '../assets/MapService/MyPin.svg';
 import Pin from '../assets/MapService/Pin.svg';
 import MapViewDirections from 'react-native-maps-directions';
 import Keys from '../Utils/Keys';
 import Colors from '../Constraints/Colors';
-import { useDispatch, useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Images from '../Constraints/Images';
 
 const screenHeight = Dimensions.get('window').height;
-const screenWidth = Dimensions.get('window').width;
+
+setUpdateIntervalForType(SensorTypes.magnetometer, 500);
 
 const Maps = props => {
   const markerRef = useRef(null);
   const markerTrackRef = useRef(null);
+  const [rotation, setRotation] = useState({x: 0, y: 0, z: 0});
 
-  // const calculateRotationFromGyroscope = (x, y, z, deltaTime) => {
-  //   // Convert gyroscope data to degrees per second
-  //   const angularVelocityX = x * deltaTime * (180 / Math.PI);
-  //   const angularVelocityY = y * deltaTime * (180 / Math.PI);
-  //   const angularVelocityZ = z * deltaTime * (180 / Math.PI);
+  useEffect(() => {
+    const gyroscopeSubscription = magnetometer.subscribe(
+      sensorData => setRotation(_angle(sensorData)),
+      error => console.log('The sensor is not available'),
+    );
 
-  //   // Combine angular velocities (this is a basic combination)
-  //   const combinedAngularVelocity =
-  //     (angularVelocityX + angularVelocityY + angularVelocityZ) / 3;
+    return () => gyroscopeSubscription.unsubscribe();
+  }, []);
 
-  //   // Calculate rotation angle using angular velocity
-  //   const rotationAngle = combinedAngularVelocity * deltaTime;
+  const _angle = _magnetometer => {
+    let angle = 0;
+    if (_magnetometer) {
+      let {x, y} = _magnetometer;
+      if (Math.atan2(y, x) >= 0) {
+        angle = Math.atan2(y, x) * (180 / Math.PI);
+      } else {
+        angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+      }
+    }
+    return Math.round(LPF.next(angle));
+  };
 
-  //   // Apply the rotation angle to the marker
-  //   return rotation + rotationAngle;
-  // };
+  console.log(rotation);
 
-  const dispatch = useDispatch();
   const {
     workerName,
     workerLat,
@@ -73,13 +80,13 @@ const Maps = props => {
   );
 
   const markerCoords = [
-    { latitude: props.latitude, longitude: props.longitude }, // Marker 1
-    { latitude: workerLat, longitude: workerLong }, // Marker 2
+    {latitude: props.latitude, longitude: props.longitude}, // Marker 1
+    {latitude: workerLat, longitude: workerLong}, // Marker 2
   ];
 
   const directionsCoords = [
-    { latitude: props.latitude, longitude: props.longitude },
-    { latitude: workerLat, longitude: workerLong },
+    {latitude: props.latitude, longitude: props.longitude},
+    {latitude: workerLat, longitude: workerLong},
   ];
 
   const markerCoordsTrip = [
@@ -87,12 +94,12 @@ const Maps = props => {
       latitude: currentLiveLat ? currentLiveLat : currentLat,
       longitude: currentLiveLong ? currentLiveLong : currentLong,
     }, // Marker 11
-    { latitude: destLat, longitude: destLong }, // Marker 22
+    {latitude: destLat, longitude: destLong}, // Marker 22
   ];
 
   const directionsCoordsTrip = [
-    { latitude: currentLat, longitude: currentLong },
-    { latitude: destLat, longitude: destLong },
+    {latitude: currentLat, longitude: currentLong},
+    {latitude: destLat, longitude: destLong},
   ];
 
   const markerCoordsTrack = [
@@ -100,12 +107,12 @@ const Maps = props => {
       latitude: currentLat,
       longitude: currentLong,
     }, // Marker 33
-    { latitude: parseFloat(destLat), longitude: parseFloat(destLong) }, // Marker 44
+    {latitude: parseFloat(destLat), longitude: parseFloat(destLong)}, // Marker 44
   ];
 
   const directionsCoordsTrack = [
-    { latitude: currentLat, longitude: currentLong },
-    { latitude: parseFloat(destLat), longitude: parseFloat(destLong) },
+    {latitude: currentLat, longitude: currentLong},
+    {latitude: parseFloat(destLat), longitude: parseFloat(destLong)},
   ];
 
   useEffect(() => {
@@ -217,7 +224,6 @@ const Maps = props => {
   // ]);
 
   useEffect(() => {
-    console.log(currentLat, currentLong);
     if (markerTrackRef.current) {
       markerTrackRef.current.animateMarkerToCoordinate(
         {
@@ -277,7 +283,7 @@ const Maps = props => {
             pitch: 0,
             // zoom: 18,
           },
-          { duration: 3000 },
+          {duration: 3000},
         );
 
         markerAnimation.current
@@ -320,7 +326,7 @@ const Maps = props => {
           pitch: 0,
           // zoom: 18,
         },
-        { duration: 3000 },
+        {duration: 3000},
       );
 
       markerAnimation.current
@@ -338,6 +344,7 @@ const Maps = props => {
     currentLiveLat ? currentLiveLat : currentLat,
     currentLiveLong ? currentLiveLong : currentLong,
   ]);
+
   return (
     <>
       <MapView
@@ -381,6 +388,7 @@ const Maps = props => {
               <Marker.Animated
                 ref={markerRef}
                 coordinate={markerAnimation.current}
+                style={{}}
                 identifier="marker11">
                 <View
                   style={{
@@ -393,12 +401,7 @@ const Maps = props => {
                       {
                         width: 30,
                         height: 30,
-
-                        transform: [
-                          {
-                            rotate: `${heading}deg`,
-                          },
-                        ],
+                        transform: [{rotateZ: `${360 - rotation}deg`}],
                       },
                     ]}
                     source={Images.ARROW}
@@ -547,5 +550,5 @@ const Maps = props => {
 export default Maps;
 
 const styles = StyleSheet.create({
-  mapStyle: { flex: 1 },
+  mapStyle: {flex: 1},
 });

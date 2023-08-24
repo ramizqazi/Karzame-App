@@ -5805,6 +5805,11 @@ lower-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
+lpf@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/lpf/-/lpf-1.0.0.tgz#709ed3b160b3754c6bd2c26b5756f449c2e9f07c"
+  integrity sha512-ywrI4ZiPYw/AoWXz7ghxRwcJXKk3xldDPeo/SqT3Det6FNM3uTfPizHJwTk1ETYo0SaRYYR1URZAXglwn5Xklg==
+
 lru-cache@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz#1da27e6710271947695daf6848e847f01d84b920"
@@ -7135,6 +7140,11 @@ react-native-gesture-handler@^2.9.0:
     invariant "^2.2.4"
     lodash "^4.17.21"
     prop-types "^15.7.2"
+
+react-native-get-location@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/react-native-get-location/-/react-native-get-location-4.0.0.tgz#ba56a1e83d1718fcaa8a35160de044a544400019"
+  integrity sha512-Fco8h+uF6ZhBFw2JrwnWJV+yh05wJNJjsjdomG62sk4HrjWbpoYkFJt6W2wuazreMaft/ynTLxKHDWLc4XPx6g==
 
 react-native-google-places-autocomplete@^2.5.1:
   version "2.5.1"

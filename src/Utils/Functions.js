@@ -1,5 +1,5 @@
 import database from '@react-native-firebase/database';
-import { Platform, PermissionsAndroid, Alert, ToastAndroid } from 'react-native';
+import {Platform, PermissionsAndroid, Alert, ToastAndroid} from 'react-native';
 // import Geolocation from '@react-native-community/geolocation';
 import storage from '@react-native-firebase/storage';
 import messaging from '@react-native-firebase/messaging';
@@ -11,7 +11,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import Share from 'react-native-share';
-import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import Geolocation from 'react-native-geolocation-service';
 
 import {
@@ -76,9 +76,9 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) *
-    Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon / 2) *
-    Math.sin(dLon / 2);
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
   return d;
@@ -210,7 +210,7 @@ export const uploadWellBeingImage = async (
 
 export const fetchUserData = async (user, dispatch, token) => {
   database()
-    .ref(`users`)
+    .ref('users')
     .orderByChild('userEmail')
     .equalTo(user.email)
     .once('value')
@@ -232,7 +232,7 @@ export const fetchUserData = async (user, dispatch, token) => {
 const updateTokenUser = async (key, token) => {
   database()
     .ref('users/' + key)
-    .update({ deviceToken: token })
+    .update({deviceToken: token})
     .then(() => {
       // console.log('token added to DB ');
     })
@@ -243,7 +243,7 @@ const updateTokenUser = async (key, token) => {
 const updateTokenOperator = async (key, token) => {
   database()
     .ref('Operators/' + key)
-    .update({ workerTokenToken: token })
+    .update({workerTokenToken: token})
     .then(() => {
       // console.log('token added to Operator DB ');
     })
@@ -289,7 +289,7 @@ export const updateVehicleData = async (
 
 export const fetchOperatorData = async (user, dispatch, token) => {
   database()
-    .ref(`Operators`)
+    .ref('Operators')
     .orderByChild('workerMail')
     .equalTo(user.email)
     .once('value')
@@ -336,7 +336,7 @@ export const onGoogleButtonPress = async (
     dispatch(addUserDeviceToken(tokenDevice));
     // console.log('Token generated Social ----', tokenDevice);
 
-    const { idToken } = await GoogleSignin.signIn();
+    const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     setShowModal(true);
     const currentUser = await auth().signInWithCredential(googleCredential);
@@ -833,7 +833,7 @@ export const checkUserExists = async (item, setShowModal) => {
     });
     setShowModal(false);
 
-    return { ...userObject, deviceToken };
+    return {...userObject, deviceToken};
   } else {
     setShowModal(false);
     return null;
@@ -893,15 +893,15 @@ export const uploadOperatorServiceToDB = async (
       handleSignOut(navigation, dispatch, setShowModal, userObjectKey);
       dispatch(addOperatorsTypeWorker(operatorType, true));
       Alert.alert(
-        `Successfully registered`,
+        'Successfully registered',
         'Now login again to proceed further',
         [
           {
             text: 'Ok',
-            onPress: () => { },
+            onPress: () => {},
           },
         ],
-        { cancelable: false },
+        {cancelable: false},
       );
     })
     .catch(error => {
@@ -1113,7 +1113,7 @@ export const uploadPoliceAlert = (
     .then(() => {
       Alert.alert(
         'Alert sent',
-        `You will be notified when your vehicle is found!`,
+        'You will be notified when your vehicle is found!',
         [
           {
             text: 'OK',
@@ -1122,7 +1122,7 @@ export const uploadPoliceAlert = (
             },
           },
         ],
-        { cancelable: false },
+        {cancelable: false},
       );
     })
     .catch(error => {
@@ -1208,13 +1208,13 @@ export const sendSMS = async (
     })
     .catch(function (error) {
       setShowModal(false);
-      alert(`Failed to send SMS`);
+      alert('Failed to send SMS');
     });
 };
 
 export const fetchUserDataSocial = async (userInfor, dispatch, token) => {
   database()
-    .ref(`users`)
+    .ref('users')
     .orderByChild('userEmail')
     .equalTo(userInfor.user.email)
     .once('value')
@@ -1240,7 +1240,7 @@ export const fetchOperatorDataSocial = async (
   setShowModal,
 ) => {
   database()
-    .ref(`Operators`)
+    .ref('Operators')
     .orderByChild('workerMail')
     .equalTo(userInfor.user.email)
     .once('value')
@@ -1425,7 +1425,7 @@ export const updateUserLatLong = (
 ) => {
   database()
     .ref(path + userObjectKey)
-    .update({ Latitude: currentLat, Longitude: currentLong })
+    .update({Latitude: currentLat, Longitude: currentLong})
     .then(() => {
       // console.log('done--- user or operator  lat long updated');
     })
@@ -1470,7 +1470,7 @@ export const fetchIsActive = (
             Alert.alert(
               'Alert',
               'Your account has been suspended now, kindly contact the admin.',
-              [{ text: 'OK', onPress: () => { } }],
+              [{text: 'OK', onPress: () => {}}],
             );
           });
         }

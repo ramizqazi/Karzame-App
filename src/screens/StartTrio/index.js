@@ -26,6 +26,7 @@ import BottomSheet3 from '../../reuseable/BottomSheet3';
 import Header from '../../reuseable/Header';
 import Constraints from '../../Constraints/Constraints';
 import {addCurrenLivetLocation, doResumeTrip} from '../../Redux/Action/actions';
+import {getCurrentLocation} from '../../Utils/LocationFun';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -108,29 +109,30 @@ const StartTrio = props => {
     navigation.toggleDrawer();
   };
 
-  const updateUserLiveLocation = (userObjectKey, lat, long, heading) => {
+  const updateUserLiveLocation = (_userObjectKey, lat, long, heading) => {
+    // console.log('hllo', _userObjectKey);
     database()
-      .ref('users/' + userObjectKey)
+      .ref('users/' + _userObjectKey)
       .update({
         LiveLatitude: lat,
         LiveLongitude: long,
       })
       .then(() => {
         dispatch(addCurrenLivetLocation(lat, long, heading));
-        // console.log('User location updated successfully!');
+        console.log('User location updated successfully!');
       })
       .catch(error => {
-        // console.log('Error updating user location: ', error);
+        console.log('Error updating user location: ', error);
       });
   };
 
   async function getLocation() {
-    requestPermission(location => {
+    getCurrentLocation(_location => {
       updateUserLiveLocation(
         userObjectKey,
-        location.latitude,
-        location.longitude,
-        location.heading,
+        _location.latitude,
+        _location.longitude,
+        _location.heading,
       );
     });
   }
@@ -138,19 +140,20 @@ const StartTrio = props => {
   React.useEffect(() => {
     // const timeIn = SOSInterval.split(' ')[0];
     // console.log('switch status new ---->' + switchBool);
-    if (switchBool) {
-      const interval = setInterval(async () => {
-        getLocation();
-        // console.log('New Bot ');
-      }, 3000);
+    // if (switchBool) {
+    const interval = setInterval(async () => {
+      getLocation();
+      // console.log('New Bot ');
+    }, 3000);
 
-      return () => {
-        clearInterval(interval);
-      };
-    } else {
-      console.log('Nothing location happening');
-    }
-  }, [switchBool]);
+    return () => {
+      clearInterval(interval);
+    };
+    // } else {
+    //   console.log('Nothing location happening');
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
